@@ -17,5 +17,9 @@ export const environment = {
       type: 'subscribe',
       channel: 'btc_jpy-orderbook',
     },
+    trades: {
+      type: 'subscribe',
+      channel: 'btc_jpy-trades',
+    },
   },
 };

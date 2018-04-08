@@ -3,13 +3,20 @@ import { HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
-import { map, flatMap, takeUntil, startWith, take } from 'rxjs/operators';
+import { map, flatMap, takeUntil, startWith, take, filter } from 'rxjs/operators';
 
 import { WebsocketClientService } from './websocket-client.service';
 import { ApiClientService } from './api-client.service';
-import { CoincheckWsOrderResponse, CoincheckOrderResponse, CoincheckWsMessage, CoincheckOrder } from '../models/coincheck.model';
+import {
+  CoincheckWsOrderResponse,
+  CoincheckWsTradeResponse,
+  CoincheckOrderResponse,
+  CoincheckWsMessage,
+  CoincheckOrder,
+} from '../models/coincheck.model';
 import { environment } from '../../environments/environment';
 
+const DEFAULT_SELECTED_PAIR = 'btc_jpy';
 const FILTER_KEY_BIDS = 'bids';
 const FILTER_KEY_ASKS = 'asks';
 const ORDER_HISTORY_RIMIT = 10;
@@ -33,14 +40,20 @@ export class CoincheckOrderbookService implements OnDestroy {
   startSubscribe() {
     // setup web socket connection.
     const message: CoincheckWsMessage = { type: environment.ws.orderbook.type, channel: environment.ws.orderbook.channel };
-    this.wsService.createConnection(environment.ws.endpoint, JSON.stringify(message));
+    this.wsService.sendMessage(JSON.stringify(message));
 
     // get orderbook from rest api before subscribe web socket connection.
     this.getInitialOrderbook()
       .pipe(
-        flatMap((order: CoincheckWsOrderResponse) => {
+        flatMap((bulkOrder: CoincheckWsOrderResponse) => {
           // start subscribe web socket connection.
-          return this.wsService.getConnectionObservable().pipe(takeUntil(this.destroy$), startWith(order));
+          return this.wsService.getConnectionObservable().pipe(
+            takeUntil(this.destroy$),
+            startWith(bulkOrder),
+            filter((order: CoincheckWsOrderResponse | CoincheckWsTradeResponse) => {
+              return this.isOrderbookEvent(order);
+            }),
+          );
         }),
       )
       .subscribe((event: CoincheckWsOrderResponse) => {
@@ -61,6 +74,11 @@ export class CoincheckOrderbookService implements OnDestroy {
 
   getAsksHistory(): Observable<CoincheckOrder[]> {
     return this.asksHistory$.asObservable();
+  }
+
+  private isOrderbookEvent(order: CoincheckWsOrderResponse | CoincheckWsTradeResponse): boolean {
+    // if the 0th array is the currently selected pair orderbook.
+    return order[0] === DEFAULT_SELECTED_PAIR;
   }
 
   private addOrder(order: CoincheckOrder[], newOrder: CoincheckOrder[], limit: number): CoincheckOrder[] {
@@ -90,7 +108,7 @@ export class CoincheckOrderbookService implements OnDestroy {
         // mapping to tuple from string array.
         const mappedBids: Array<Array<string>> = apiRes.bids.map((item: [number, string]) => [item[0].toString(), item[1]]);
         const mappedAsks: Array<Array<string>> = apiRes.asks.map((item: [number, string]) => [item[0].toString(), item[1]]);
-        return ['btc_jpy', { bids: mappedBids, asks: mappedAsks }] as CoincheckWsOrderResponse;
+        return [DEFAULT_SELECTED_PAIR, { bids: mappedBids, asks: mappedAsks }] as CoincheckWsOrderResponse;
       }),
     );
   }

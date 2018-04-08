@@ -4,6 +4,8 @@
 
 export type CoincheckWsOrderResponse = [string, { [key: string]: Array<Array<string>> }];
 
+export type CoincheckWsTradeResponse = [number, string, string, string, string];
+
 export interface CoincheckOrderResponse {
   asks: Array<[number, string]>;
   bids: Array<[number, string]>;
@@ -35,7 +37,7 @@ export interface CoincheckTrade {
   rate: number;
   pair: string;
   order_type: 'sell' | 'buy';
-  created_at: string;
+  created_at?: string;
 }
 
 export interface CoincheckTradesResponse {

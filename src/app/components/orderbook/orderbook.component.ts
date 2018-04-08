@@ -18,7 +18,7 @@ export class OrderbookComponent implements OnInit {
 
   ngOnInit() {
     this.obService.startSubscribe();
-    this.ordersBids$ = this.obService.getBidsHistory().pipe(tap((x) => console.log(x)));
-    this.ordersAsks$ = this.obService.getAsksHistory().pipe(tap((x) => console.log(x)));
+    this.ordersBids$ = this.obService.getBidsHistory();
+    this.ordersAsks$ = this.obService.getAsksHistory();
   }
 }

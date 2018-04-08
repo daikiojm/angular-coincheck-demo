@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { WebSocketSubject } from 'rxjs/observable/dom/WebSocketSubject';
+import { filter } from 'rxjs/operators';
 
 @Injectable()
 export class WebsocketClientService {
@@ -8,8 +9,15 @@ export class WebsocketClientService {
 
   constructor() {}
 
-  createConnection(url: string, message: string) {
+  createConnection(url: string) {
     this.socket$ = WebSocketSubject.create(url);
+  }
+
+  closeConnection() {
+    this.socket$.complete();
+  }
+
+  sendMessage(message): void {
     this.socket$.next(message);
   }
 
