@@ -6,12 +6,13 @@ describe('OrderbookComponent', () => {
   let component: OrderbookComponent;
   let fixture: ComponentFixture<OrderbookComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ OrderbookComponent ]
-    })
-    .compileComponents();
-  }));
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [OrderbookComponent],
+      }).compileComponents();
+    }),
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(OrderbookComponent);

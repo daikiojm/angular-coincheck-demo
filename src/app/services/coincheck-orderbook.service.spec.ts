@@ -5,11 +5,14 @@ import { CoincheckOrderbookService } from './coincheck-orderbook.service';
 describe('CoincheckOrderbookService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [CoincheckOrderbookService]
+      providers: [CoincheckOrderbookService],
     });
   });
 
-  it('should be created', inject([CoincheckOrderbookService], (service: CoincheckOrderbookService) => {
-    expect(service).toBeTruthy();
-  }));
+  it(
+    'should be created',
+    inject([CoincheckOrderbookService], (service: CoincheckOrderbookService) => {
+      expect(service).toBeTruthy();
+    }),
+  );
 });

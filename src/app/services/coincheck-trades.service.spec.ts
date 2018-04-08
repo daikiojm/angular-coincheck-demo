@@ -5,11 +5,14 @@ import { CoincheckTradesService } from './coincheck-trades.service';
 describe('CoincheckTradesService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [CoincheckTradesService]
+      providers: [CoincheckTradesService],
     });
   });
 
-  it('should be created', inject([CoincheckTradesService], (service: CoincheckTradesService) => {
-    expect(service).toBeTruthy();
-  }));
+  it(
+    'should be created',
+    inject([CoincheckTradesService], (service: CoincheckTradesService) => {
+      expect(service).toBeTruthy();
+    }),
+  );
 });

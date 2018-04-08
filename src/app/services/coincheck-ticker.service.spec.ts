@@ -5,11 +5,14 @@ import { CoincheckTickerService } from './coincheck-ticker.service';
 describe('CoincheckTickerService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [CoincheckTickerService]
+      providers: [CoincheckTickerService],
     });
   });
 
-  it('should be created', inject([CoincheckTickerService], (service: CoincheckTickerService) => {
-    expect(service).toBeTruthy();
-  }));
+  it(
+    'should be created',
+    inject([CoincheckTickerService], (service: CoincheckTickerService) => {
+      expect(service).toBeTruthy();
+    }),
+  );
 });

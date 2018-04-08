@@ -5,4 +5,17 @@
 
 export const environment = {
   production: false,
+  api: {
+    endpoint: 'https://coincheck.com',
+    ticker: '/api/ticker',
+    trades: '/api/trades',
+    orderBooks: '/api/order_books',
+  },
+  ws: {
+    endpoint: 'wss://ws-api.coincheck.com/',
+    orderbook: {
+      type: 'subscribe',
+      channel: 'btc_jpy-orderbook',
+    },
+  },
 };

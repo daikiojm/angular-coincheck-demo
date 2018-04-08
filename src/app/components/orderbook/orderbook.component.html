@@ -1,3 +1,13 @@
-<p>
-  orderbook works!
-</p>
+<div class="orderbook">
+  <div class="bids-order" *ngFor="let order of ordersBids$ | async">
+    <span>売</span>
+    <span>{{ order?.rate }}</span>
+    <span>{{ order?.amount }}</span>
+  </div>
+
+  <div class="asks-order" *ngFor="let order of (ordersAsks$ | async)?.reverse()">
+    <span>買</span>
+    <span>{{ order?.rate }}</span>
+    <span>{{ order?.amount }}</span>
+  </div>
+</div>

@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -15,7 +16,7 @@ import { TradesComponent } from './components/trades/trades.component';
 
 @NgModule({
   declarations: [AppComponent, OrderbookComponent, TradesComponent],
-  imports: [BrowserModule, AppRoutingModule],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule],
   providers: [ApiClientService, WebsocketClientService, CoincheckTickerService, CoincheckTradesService, CoincheckOrderbookService],
   bootstrap: [AppComponent],
 })
