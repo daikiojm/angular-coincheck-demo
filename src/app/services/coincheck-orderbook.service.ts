@@ -3,7 +3,8 @@ import { HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
-import { map, flatMap, takeUntil, startWith, take, filter } from 'rxjs/operators';
+import { of } from 'rxjs/observable/of';
+import { map, flatMap, takeUntil, startWith, filter, catchError } from 'rxjs/operators';
 
 import { WebsocketClientService } from './websocket-client.service';
 import { ApiClientService } from './api-client.service';
@@ -110,6 +111,12 @@ export class CoincheckOrderbookService implements OnDestroy {
         const mappedAsks: Array<Array<string>> = apiRes.asks.map((item: [number, string]) => [item[0].toString(), item[1]]);
         return [DEFAULT_SELECTED_PAIR, { bids: mappedBids, asks: mappedAsks }] as CoincheckWsOrderResponse;
       }),
+      // fallback data is flowed when the REST API call fails.
+      catchError((error) => of(this.getFailbackOrderbook())),
     );
+  }
+
+  private getFailbackOrderbook(): CoincheckWsOrderResponse {
+    return [DEFAULT_SELECTED_PAIR, { bids: [['n/a', 'n/a']], asks: [['n/a', 'n/a']] }] as CoincheckWsOrderResponse;
   }
 }

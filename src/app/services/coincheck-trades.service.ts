@@ -3,24 +3,21 @@ import { HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
-import { map, flatMap, takeUntil, startWith, take, filter } from 'rxjs/operators';
+import { of } from 'rxjs/observable/of';
+import { map, flatMap, takeUntil, startWith, filter, catchError } from 'rxjs/operators';
 
 import { WebsocketClientService } from './websocket-client.service';
 import { ApiClientService } from './api-client.service';
 import {
   CoincheckWsOrderResponse,
   CoincheckWsTradeResponse,
-  CoincheckOrderResponse,
   CoincheckTradesResponse,
   CoincheckTrade,
   CoincheckWsMessage,
-  CoincheckOrder,
 } from '../models/coincheck.model';
 import { environment } from '../../environments/environment';
 
 const DEFAULT_SELECTED_PAIR = 'btc_jpy';
-const FILTER_KEY_BIDS = 'bids';
-const FILTER_KEY_ASKS = 'asks';
 const TRADE_HISTORY_RIMIT = 20;
 
 @Injectable()
@@ -53,8 +50,9 @@ export class CoincheckTradesService implements OnDestroy {
               return this.isTradesEvent(trades);
             }),
           );
-        })
-      ).subscribe((event: CoincheckWsTradeResponse[]) => {
+        }),
+      )
+      .subscribe((event: CoincheckWsTradeResponse[]) => {
         const trade = this.adaptTradeType(event);
         this.tradeHistory = this.addTrade(this.tradeHistory, trade, TRADE_HISTORY_RIMIT);
         this.tradeHistory$.next(this.tradeHistory);
@@ -93,17 +91,25 @@ export class CoincheckTradesService implements OnDestroy {
   private getInitialTrades(): Observable<CoincheckWsTradeResponse[]> {
     // const url = environment.api.endpoint + environment.api.trades;
     const url = environment.api.trades;
-    const params = new HttpParams()
-      .set('pair', DEFAULT_SELECTED_PAIR)
-      .set('limit', TRADE_HISTORY_RIMIT.toString());
+    const params = new HttpParams().set('pair', DEFAULT_SELECTED_PAIR).set('limit', TRADE_HISTORY_RIMIT.toString());
     return this.apiService.get<CoincheckTradesResponse>(url, params).pipe(
       map((apiRes: CoincheckTradesResponse) => {
         // mapping to tuple from string array.
         const result: CoincheckWsTradeResponse[] = apiRes.data.map((item: CoincheckTrade) => {
-          return [item.id, item.pair,  item.rate, item.amount, item.order_type];
+          return [item.id, item.pair, item.rate, item.amount, item.order_type];
         }) as CoincheckWsTradeResponse[];
         return result;
       }),
+      // fallback data is flowed when the REST API call fails.
+      catchError((error) => of(this.getFailbackTrades())),
     );
+  }
+
+  private getFailbackTrades(): CoincheckWsTradeResponse[] {
+    const dummy: CoincheckWsTradeResponse[] = [];
+    for (let cnt = 0; cnt < TRADE_HISTORY_RIMIT; cnt++) {
+      dummy.push([0, 'n/a', 'n/a', 'n/a', 'n/a']);
+    }
+    return dummy;
   }
 }

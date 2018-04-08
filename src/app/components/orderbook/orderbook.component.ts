@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { map, filter, tap } from 'rxjs/operators';
 
 import { CoincheckOrderbookService } from '../../services/coincheck-orderbook.service';
 import { CoincheckOrder } from '../../models/coincheck.model';
