@@ -7,6 +7,6 @@ export class ApiClientService {
   constructor(private http: HttpClient) {}
 
   get<T>(url: string, params?: HttpParams): Observable<T> {
-    return this.http.get<T>(url, { ...params });
+    return this.http.get<T>(url, { params: params });
   }
 }

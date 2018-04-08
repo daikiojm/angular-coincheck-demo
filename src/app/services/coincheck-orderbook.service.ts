@@ -1,4 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
+import { HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
@@ -83,7 +84,8 @@ export class CoincheckOrderbookService implements OnDestroy {
   private getInitialOrderbook(): Observable<CoincheckWsOrderResponse> {
     // const url = environment.api.endpoint + environment.api.orderBooks;
     const url = environment.api.orderBooks;
-    return this.apiService.get<CoincheckOrderResponse>(url).pipe(
+    const params = new HttpParams().set('limit', ORDER_HISTORY_RIMIT.toString());
+    return this.apiService.get<CoincheckOrderResponse>(url, params).pipe(
       map((apiRes: CoincheckOrderResponse) => {
         // mapping to tuple from string array.
         const mappedBids: Array<Array<string>> = apiRes.bids.map((item: [number, string]) => [item[0].toString(), item[1]]);
