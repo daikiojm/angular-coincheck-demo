@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { of } from 'rxjs/observable/of';
-import { map, flatMap, takeUntil, startWith, filter, catchError } from 'rxjs/operators';
+import { map, mergeMap, takeUntil, startWith, filter, catchError } from 'rxjs/operators';
 
 import { WebsocketClientService } from './websocket-client.service';
 import { ApiClientService } from './api-client.service';
@@ -14,6 +14,7 @@ import {
   CoincheckTradesResponse,
   CoincheckTrade,
   CoincheckWsMessage,
+  CoinchekLastPrice,
 } from '../models/coincheck.model';
 import { environment } from '../../environments/environment';
 
@@ -22,7 +23,7 @@ const TRADE_HISTORY_RIMIT = 20;
 
 @Injectable()
 export class CoincheckTradesService implements OnDestroy {
-  private tradeHistory: CoincheckTrade[];
+  private tradeHistory: CoincheckTrade[] = [];
   private tradeHistory$: ReplaySubject<CoincheckTrade[]> = new ReplaySubject<CoincheckTrade[]>(1);
 
   private destroy$: Subject<boolean> = new Subject<boolean>();
@@ -41,7 +42,7 @@ export class CoincheckTradesService implements OnDestroy {
 
     this.getInitialTrades()
       .pipe(
-        flatMap((bulkTrades: CoincheckWsTradeResponse[]) => {
+        mergeMap((bulkTrades: CoincheckWsTradeResponse[]) => {
           return this.wsService.getConnectionObservable().pipe(
             map((trades: CoincheckWsTradeResponse) => [trades]),
             takeUntil(this.destroy$),

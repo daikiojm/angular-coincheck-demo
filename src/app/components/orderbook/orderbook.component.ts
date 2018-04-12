@@ -20,4 +20,8 @@ export class OrderbookComponent implements OnInit {
     this.ordersBids$ = this.obService.getBidsHistory();
     this.ordersAsks$ = this.obService.getAsksHistory();
   }
+
+  orderByRate(index: number, order: CoincheckOrder) {
+    return order.rate;
+  }
 }

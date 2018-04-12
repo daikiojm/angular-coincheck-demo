@@ -1,11 +1,11 @@
 <div class="orderbook">
-  <div class="bids-order" *ngFor="let order of ordersBids$ | async">
+  <div class="bids-order" *ngFor="let order of ordersBids$ | async; trackBy: orderByRate">
     <span>売</span>
     <span>{{ order?.rate }}</span>
     <span>{{ order?.amount }}</span>
   </div>
 
-  <div class="asks-order" *ngFor="let order of (ordersAsks$ | async)?.reverse()">
+  <div class="asks-order" *ngFor="let order of ordersAsks$ | async; trackBy: orderByRate">
     <span>買</span>
     <span>{{ order?.rate }}</span>
     <span>{{ order?.amount }}</span>

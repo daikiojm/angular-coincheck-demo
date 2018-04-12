@@ -21,6 +21,11 @@ export interface CoincheckOrder {
   amount: string;
 }
 
+export interface CoinchekLastPrice {
+  ask: string;
+  bid: string;
+}
+
 export interface CoincheckTicker {
   last: number;
   bid: number;
