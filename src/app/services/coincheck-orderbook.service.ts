@@ -111,13 +111,13 @@ export class CoincheckOrderbookService implements OnDestroy {
     newOrders.forEach((newOrder) => {
       const index = orders.findIndex((order) => order.rate === newOrder.rate);
       if (index >= 0) {
-        if (newOrder.amount === '0') {
+        if (newOrder.amount === 0) {
           orders.splice(index, 1);
         } else {
           orders[index] = newOrder;
         }
       } else {
-        if (newOrder.amount !== '0') {
+        if (newOrder.amount !== 0) {
           if (+newOrder.rate <= askBestPrice) {
             orders.push(newOrder);
           }
@@ -132,13 +132,13 @@ export class CoincheckOrderbookService implements OnDestroy {
     newOrders.forEach((newOrder) => {
       const index = orders.findIndex((order) => order.rate === newOrder.rate);
       if (index >= 0) {
-        if (newOrder.amount === '0') {
+        if (newOrder.amount === 0) {
           orders.splice(index, 1);
         } else {
           orders[index] = newOrder;
         }
       } else {
-        if (newOrder.amount !== '0') {
+        if (newOrder.amount !== 0) {
           if (+newOrder.rate >= bidBestPrice) {
             orders.push(newOrder);
           }
@@ -155,8 +155,8 @@ export class CoincheckOrderbookService implements OnDestroy {
 
   private adaptOrderType(orderArray: string[]): CoincheckOrder {
     return {
-      rate: orderArray[0],
-      amount: orderArray[1],
+      rate: +orderArray[0],
+      amount: +orderArray[1],
     };
   }
 

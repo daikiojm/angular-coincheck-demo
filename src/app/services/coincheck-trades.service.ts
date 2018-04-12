@@ -9,6 +9,7 @@ import { map, mergeMap, takeUntil, startWith, filter, catchError } from 'rxjs/op
 import { WebsocketClientService } from './websocket-client.service';
 import { ApiClientService } from './api-client.service';
 import {
+  CoincheckOrderType,
   CoincheckWsOrderResponse,
   CoincheckWsTradeResponse,
   CoincheckTradesResponse,
@@ -79,11 +80,11 @@ export class CoincheckTradesService implements OnDestroy {
     const result = tradeTupleArray.map((tradeTuple: CoincheckWsTradeResponse) => {
       return {
         id: tradeTuple[0],
-        amount: tradeTuple[3],
+        amount: +tradeTuple[3],
         rate: +tradeTuple[2],
         pair: tradeTuple[1],
-        order_type: tradeTuple[4] as 'sell' | 'buy',
-        created_at: null,
+        order_type: <CoincheckOrderType>tradeTuple[4],
+        created_at: Date.now(),
       };
     });
     return result;

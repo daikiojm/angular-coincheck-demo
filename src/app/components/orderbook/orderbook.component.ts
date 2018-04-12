@@ -21,7 +21,7 @@ export class OrderbookComponent implements OnInit {
     this.ordersAsks$ = this.obService.getAsksHistory();
   }
 
-  orderByRate(index: number, order: CoincheckOrder) {
-    return order.rate;
+  orderByAmount(index: number, order: CoincheckOrder) {
+    return order.amount;
   }
 }

@@ -1,10 +1,11 @@
 <div class="trades">
   <div *ngFor="let trade of trades$ | async">
     <div [ngClass]="{'bids-order': trade.order_type === 'sell', 'asks-order': trade.order_type === 'buy' }">
+      <span>{{ trade?.created_at | date:'hh:mm:ss' }}</span>
       <span *ngIf="trade.order_type === 'sell'">売</span>
       <span *ngIf="trade.order_type === 'buy'">買</span>
-      <span>{{ trade?.rate }}</span>
-      <span>{{ trade?.amount }}</span>
+      <span>{{ trade?.rate | number }}</span>
+      <span>{{ trade?.amount | number:'1.8-8' }}</span>
     </div>
   </div>
 </div>
