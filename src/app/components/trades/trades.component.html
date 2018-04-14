@@ -1,4 +1,10 @@
 <div class="trades">
+  <div class="trade-header">
+    <span class="date">時間</span>
+    <span class="sell-or-buy">売/買</span>
+    <span class="rate">レート</span>
+    <span class="amount">注文量</span>
+  </div>
   <div *ngFor="let trade of trades$ | async">
     <div [ngClass]="{'bids-order': trade.order_type === 'sell', 'asks-order': trade.order_type === 'buy' }">
       <span>{{ trade?.created_at | date:'hh:mm:ss' }}</span>

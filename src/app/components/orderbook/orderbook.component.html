@@ -1,11 +1,16 @@
 <div class="orderbook">
-  <div class="bids-order" *ngFor="let order of ordersBids$ | async; trackBy: orderByAmount">
+  <div class="order-header">
+    <span class="sell-or-buy">売/買</span>
+    <span class="rate">レート</span>
+    <span class="amount">注文量</span>
+  </div>
+  <div class="bids-order" *ngFor="let order of (ordersBids$ | async)?.reverse(); trackBy: orderByAmount">
     <span>売</span>
     <span>{{ order?.rate | number }}</span>
     <span>{{ order?.amount | number:'1.8-8' }}</span>
   </div>
 
-  <div class="asks-order" *ngFor="let order of ordersAsks$ | async; trackBy: orderByAmount">
+  <div class="asks-order" *ngFor="let order of (ordersAsks$ | async)?.reverse(); trackBy: orderByAmount">
     <span>買</span>
     <span>{{ order?.rate | number }}</span>
     <span>{{ order?.amount | number:'1.8-8' }}</span>

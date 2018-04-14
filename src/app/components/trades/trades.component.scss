@@ -1,9 +1,45 @@
+.trades {
+  width: 320px;
+}
+
+.trade-header {
+  display: flex;
+  justify-content: flex-start;
+  color: gray;
+  font-size: 12px;
+
+  .span {
+    display: block;
+    margin: auto;
+  }
+
+  .date {
+    width: 90px;
+  }
+
+  .sell-or-buy {
+    width: 40px;
+  }
+
+  .rate {
+    width: 90px;
+  }
+
+  .amount {
+    width: 100px;
+  }
+}
+
 .bids-order {
+  display: flex;
+  justify-content: space-between;
   color: #E74C3C;
   animation: fadeIn 1s ease 0s 1 normal;
 }
 
 .asks-order {
+  display: flex;
+  justify-content: space-between;
   color: #27AE60;
   animation: fadeIn 1s ease 0s 1 normal;
 }

@@ -20,7 +20,7 @@ import {
 import { environment } from '../../environments/environment';
 
 const DEFAULT_SELECTED_PAIR = 'btc_jpy';
-const TRADE_HISTORY_RIMIT = 20;
+const TRADE_HISTORY_RIMIT = 40;
 
 @Injectable()
 export class CoincheckTradesService implements OnDestroy {
