@@ -8,5 +8,10 @@
 }
 
 .section-title {
+  margin: 0px auto 12px 0px;
   color: gray;
+
+  .mat-icon {
+    vertical-align: bottom;
+  }
 }

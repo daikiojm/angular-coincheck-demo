@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
+import { MaterialModule } from './material/material.module';
 
 import { CoincheckTickerService } from './services/coincheck-ticker.service';
 import { CoincheckTradesService } from './services/coincheck-trades.service';
@@ -16,7 +17,7 @@ import { TradesComponent } from './components/trades/trades.component';
 
 @NgModule({
   declarations: [AppComponent, OrderbookComponent, TradesComponent],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule, MaterialModule],
   providers: [ApiClientService, WebsocketClientService, CoincheckTickerService, CoincheckTradesService, CoincheckOrderbookService],
   bootstrap: [AppComponent],
 })
