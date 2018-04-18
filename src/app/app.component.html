@@ -1,15 +1,16 @@
-<mat-card>
-  <div class="orderbook-wapper">
+<app-toolbar class="toolbar"></app-toolbar>
+
+<div class="wapper">
+  <mat-card class="orderbook-wapper">
     <h4 class="section-title"><mat-icon>list</mat-icon>取引板</h4>
     <app-orderbook></app-orderbook>
-  </div>
-</mat-card>
+  </mat-card>
 
-<mat-card>
-  <div class="trades-wapper">
+  <mat-card class="trades-wapper">
     <h4 class="section-title"><mat-icon>history</mat-icon>約定履歴</h4>
     <app-trades></app-trades>
-  </div>
-</mat-card>
+  </mat-card>
+</div>
+
 
 <!-- <router-outlet></router-outlet> -->

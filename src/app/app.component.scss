@@ -1,10 +1,21 @@
-:host {
+.toolbar {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+.wapper {
   display: flex;
+  position: absolute;
   justify-content: space-around;
+  top: 64px;
+  width: 100%;
 }
 
 .orderbook-wapper, .trades-wapper {
   width: 40%;
+  margin-top: 24px;
 }
 
 .section-title {
